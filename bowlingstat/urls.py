@@ -18,10 +18,14 @@ from django.urls import path
 from bowlingstat import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('teams/', views.team_list),
-    path('teams/add', views.add_team),
-    path('teams/<str:teamid>/', views.team_data),
-    path('teams/<str:teamid>/events', views.team_events_all),
-    path('events/add', views.add_team_event_data)
+    path("admin/", admin.site.urls),
+    path("teams/", views.team_list),
+    path("teams/add", views.add_team),
+    path("teams/<str:teamid>/", views.team_data),
+    path("teams/<str:teamid>/events", views.team_events_all),
+    path("teams/<str:teamid>/events-summary", views.team_events_summary_all),
+    # path('teams/<str:teamid>/events/<str:eventid>', views.team_events_all),
+    # path("events/add", views.add_team_event_data),
+    # path("events-summary/add", views.add_team_event_summary_data),
+    path("teams/<str:teamid>/upload", views.upload_event_csv),
 ]
