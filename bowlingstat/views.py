@@ -57,22 +57,6 @@ def team_data(self, **arg):
             return JsonResponse({"error": "Team does not exist"}, status=status.HTTP_404_NOT_FOUND)
 
 
-def team_events_all(self, **args):
-    teamid_request = args["teamid"]
-    # check if team exist
-    try:
-        team = EventData.objects.filter(team_id=teamid_request)
-    except EventData.DoesNotExist:
-        team = None
-
-    if team:
-        # return team event data
-        serializer = EventDataSerializer(team, many=True)
-        return JsonResponse({"data": serializer.data})
-    else:
-        return JsonResponse({"error": "Team does not exist"}, status=status.HTTP_404_NOT_FOUND)
-
-
 @api_view(["GET", "POST"])
 def add_team_event_data(request, **args):
     if request.method == "GET":
@@ -102,20 +86,42 @@ def add_team_event_summary_data(request, **args):
     return JsonResponse({"status", "work in progress"})
 
 
-def team_events_summary_all(request, **args):
-    team_id = args["teamid"]
-    # return JsonResponse({"status": "Work in progress"})
+def team_events_all(self, **args):
+    teamid_request = args["teamid"]
+    # check if team exist
     try:
-        team = EventSummaryData.objects.filter(team_id=team_id)
-    except EventSummaryData.DoesNotExist:
-        team = None
+        eventdata = EventData.objects.filter(team_id=teamid_request)
+        eventdataserializer = EventDataSerializer(eventdata, many=True)
 
-    if team:
-        # return team event data
-        serializer = EventSummaryDataSerializer(team, many=True)
-        return JsonResponse({"data": serializer.data})
-    else:
-        return JsonResponse({"error": "Team does not exist"}, status=status.HTTP_404_NOT_FOUND)
+        eventsummarydata = EventSummaryData.objects.filter(team_id=teamid_request)
+        eventsummaryserializer = EventSummaryDataSerializer(eventsummarydata, many=True)
+
+        return JsonResponse(
+            {
+                "data": {"team_id": teamid_request, "event_id": "all", "eventdata": eventdataserializer.data, "eventsummary": eventsummaryserializer.data},
+            }
+        )
+    except EventData.DoesNotExist:
+        return JsonResponse({"error": "Empty Data"}, status=status.HTTP_404_NOT_FOUND)
+
+
+def team_events_single(request, **args):
+    teamid_request = args["teamid"]
+    eventid_request = args["eventid"]
+
+    try:
+        eventdata = EventData.objects.filter(event_id=eventid_request).filter(team_id=teamid_request)
+        eventdataserializer = EventDataSerializer(eventdata, many=True)
+        eventsummarydata = EventSummaryData.objects.filter(event_id=eventid_request).filter(team_id=teamid_request)
+        eventsummaryserializer = EventSummaryDataSerializer(eventsummarydata, many=True)
+
+        return JsonResponse(
+            {
+                "data": {"team_id": teamid_request, "event_id": eventid_request, "eventdata": eventdataserializer.data, "eventsummary": eventsummaryserializer.data},
+            }
+        )
+    except EventData.DoesNotExist:
+        return JsonResponse({"error": "Empty Data"})
 
 
 @api_view(["GET", "POST"])
@@ -138,6 +144,6 @@ def upload_event_csv(request, **args):
     team = {"team_id": team_id, "team_name": team_name, "bowlers": bowlersStr, "events": events}
     (teamUpdateStatus, team_data) = updateTeamData(data=team)
     if summaryUpdateStatus == SUCCESS and teamEventDataUpdateStatus == SUCCESS and teamUpdateStatus == SUCCESS:
-        return JsonResponse({"status": "updated"})
+        return JsonResponse({"status": "updated", "team_id": team_id, "event_id": event_id})
 
     return JsonResponse({"error": "something wrong"})
