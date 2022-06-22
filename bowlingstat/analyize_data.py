@@ -64,8 +64,12 @@ def analyize_data(file, isWomen, team_name, event_name, location, season, num_of
 
     num_of_baker_games = int(num_of_baker_games[0])
     isWomen = bool(isWomen[0])
-    baker_match_play_distributions = list(baker_match_play_distributions[0].split(","))
-    baker_match_play_distributions = [int(distribution) for distribution in baker_match_play_distributions]
+    if "," in baker_match_play_distributions[0]:
+        baker_match_play_distributions = list(baker_match_play_distributions[0].split(","))
+        baker_match_play_distributions = [int(distribution) for distribution in baker_match_play_distributions]
+    else:
+        baker_match_play_distributions = [0]
+
     team_name = team_name[0]
     team_id = "-".join(team_name.split(" ")).lower()
     print(team_id)
