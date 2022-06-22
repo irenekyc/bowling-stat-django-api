@@ -54,7 +54,7 @@ def calculatesummarydata(df):
             baker_num_strikes=("num_strikes", "sum"),
             baker_num_strikes_attempt=("first_balls", "sum"),
             baker_strikes_percentage=("strikes_percentage", "mean"),
-            baker_first_ball_ave=("first_ball_ave", "mean"),
+            baker_first_ball_average=("first_ball_average", "mean"),
             baker_fill_balls=("fill_balls", "sum"),
             baker_fill_ball_strikes=("fill_ball_strikes", "sum"),
             baker_fill_ball_non_strikes=("fill_ball_non_strikes", "sum"),
@@ -71,7 +71,7 @@ def calculatesummarydata(df):
             team_num_strikes=("num_strikes", "sum"),
             team_num_strikes_attempt=("first_balls", "sum"),
             team_strikes_percentage=("strikes_percentage", "mean"),
-            team_first_ball_ave=("first_ball_ave", "mean"),
+            team_first_ball_average=("first_ball_average", "mean"),
             team_doubles=("num_doubles", "sum"),
             team_doubles_attempt=("num_double_attempts", "sum"),
             team_double_percentage=("double_percentage", "mean"),
@@ -91,7 +91,7 @@ def calculatesummarydata(df):
             baker_mp_num_strikes=("num_strikes", "sum"),
             baker_mp_num_strikes_attempt=("first_balls", "sum"),
             baker_mp_strikes_percentage=("strikes_percentage", "mean"),
-            baker_mp_first_ball_ave=("first_ball_ave", "mean"),
+            baker_mp_first_ball_average=("first_ball_average", "mean"),
             baker_mp_fill_balls=("fill_balls", "sum"),
             baker_mp_fill_ball_strikes=("fill_ball_strikes", "sum"),
             baker_mp_fill_ball_non_strikes=("fill_ball_non_strikes", "sum"),
@@ -100,7 +100,7 @@ def calculatesummarydata(df):
         .reset_index()
         .set_index("bowler")
     )
-    _df_all = _df_all.groupby(["bowler"]).agg(all_num_frames=("first_balls", "sum"), all_frame_ave=("frame_average", "mean"), all_num_strikes=("num_strikes", "sum"), all_num_strikes_attempt=("first_balls", "sum"), all_strikes_percentage=("strikes_percentage", "mean"), all_first_ball_ave=("first_ball_ave", "mean")).reset_index().set_index("bowler")
+    _df_all = _df_all.groupby(["bowler"]).agg(all_num_frames=("first_balls", "sum"), all_frame_ave=("frame_average", "mean"), all_num_strikes=("num_strikes", "sum"), all_num_strikes_attempt=("first_balls", "sum"), all_strikes_percentage=("strikes_percentage", "mean"), all_first_ball_average=("first_ball_average", "mean")).reset_index().set_index("bowler")
 
     _df_combine = pd.concat([_df_baker, _df_team, _df_baker_mp, _df_all], axis=1).reset_index()
 
@@ -155,8 +155,8 @@ def transform_to_table(data_sets, num_of_baker_games):
     # num_frames = num of first ball attempt
     # num_first_balls = num of first ball attempt
     # first_ball_average = first ball average
-    _df_first_ball = _data_sets.groupby(["game_type", "game_group", "bowler"]).agg(first_balls=("first_ball_attempt", "sum"), first_ball_ave=("first_ball", "sum")).reset_index()
-    _df_first_ball["first_ball_ave"] = _df_first_ball.apply(lambda x: x["first_ball_ave"] / x["first_balls"], axis=1)
+    _df_first_ball = _data_sets.groupby(["game_type", "game_group", "bowler"]).agg(first_balls=("first_ball_attempt", "sum"), first_ball_average=("first_ball", "sum")).reset_index()
+    _df_first_ball["first_ball_average"] = _df_first_ball.apply(lambda x: x["first_ball_average"] / x["first_balls"], axis=1)
 
     def calcFrameNo(x):
         return x[x != 0].count()
