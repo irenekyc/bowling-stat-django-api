@@ -27,7 +27,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
-CSRF_TRUSTED_ORIGINS = ["*"]
+CSRF_TRUSTED_ORIGINS = ["https://fierce-plateau-64816.herokuapp.com/"]
 CORS_ORIGIN_ALLOW_ALL = True
 
 CORS_ALLOW_CREDENTIALS = True
