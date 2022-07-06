@@ -18,9 +18,10 @@ def getEventDate(df):
     return (start_date, end_date)
 
 
-def transform_to_frames(isWomen, _data, _game_type, num_baker_games, baker_match_distributions):
+def transform_to_frames(_data, _game_type, num_baker_games, num_of_baker_games_per_block, baker_match_play_1, baker_match_play_2, baker_match_play_3):
     data_entries = []
     _df = _data.copy()
+    baker_match_distributions = [baker_match_play_1, baker_match_play_2, baker_match_play_3]
 
     for row_no in range(len(_df)):
         game_no = row_no + 1
@@ -29,7 +30,7 @@ def transform_to_frames(isWomen, _data, _game_type, num_baker_games, baker_match
             frame_no = i + 1
             data_entry = [
                 _game_type,
-                getGameGroup(isWomen, game_no, _game_type, num_baker_games, baker_match_distributions),
+                getGameGroup(num_of_baker_games_per_block, game_no, _game_type, num_baker_games, baker_match_distributions),
                 game_no,
                 frame_no,
                 getCurrentFrameBowler(frame_no, current_row_data),
@@ -51,7 +52,7 @@ def transform_to_frames(isWomen, _data, _game_type, num_baker_games, baker_match
     return pd.DataFrame(data_entries, columns=["game_type", "game_group", "game_no", "frame_no", "bowler", "first_ball", "second_ball", "pin_leave", "pin_2_leave", "first_ball_attempt", "spare", "strike", "double", "double_attempt", "open", "accumulated_score", "frame_score", "is_fill_ball"])
 
 
-def analyize_data(file, isWomen, team_name, event_name, location, season, num_of_baker_games, baker_match_play_distributions):
+def analyize_data(file, team_name, event_name, location, season, num_of_baker_games, num_of_baker_games_per_block, baker_match_play_1, baker_match_play_2, baker_match_play_3):
     df = pd.read_csv(file[0], index_col=False)
     df = df.drop(columns="Event")
     df = df.drop(columns="EventType")
@@ -63,30 +64,26 @@ def analyize_data(file, isWomen, team_name, event_name, location, season, num_of
     location = location[0]
 
     num_of_baker_games = int(num_of_baker_games[0])
-    isWomen = bool(isWomen[0])
-    if "," in baker_match_play_distributions[0]:
-        baker_match_play_distributions = list(baker_match_play_distributions[0].split(","))
-        baker_match_play_distributions = [int(distribution) for distribution in baker_match_play_distributions]
-    else:
-        baker_match_play_distributions = [0]
-
+    num_of_baker_games_per_block = int(num_of_baker_games_per_block[0])
+    baker_match_play_1 = int(baker_match_play_1[0])
+    baker_match_play_2 = int(baker_match_play_2[0])
+    baker_match_play_3 = int(baker_match_play_3[0])
     team_name = team_name[0]
     team_id = "-".join(team_name.split(" ")).lower()
-    print(team_id)
 
     # 1. Divided into Baker, Baker Match and Baker
     _df_team = df[df["GameType"] == "Team"]
-    _df_baker = df[df["GameType"] == "Baker"].iloc[0 : 5 * num_of_baker_games]
+    _df_baker = df[df["GameType"] == "Baker"].iloc[0 : num_of_baker_games_per_block * num_of_baker_games]
     _df_baker_match = pd.DataFrame()
-    _df_baker_match = df[df["GameType"] == "Baker"].iloc[5 * num_of_baker_games :]
+    _df_baker_match = df[df["GameType"] == "Baker"].iloc[num_of_baker_games_per_block * num_of_baker_games :]
     _df_baker_match["GameType"] = "Baker Match Play"
 
     # 2. transform to frames
-    team_data = transform_to_frames(isWomen=isWomen, _data=_df_team, _game_type="Team", num_baker_games=num_of_baker_games, baker_match_distributions=baker_match_play_distributions)
-    baker_data = transform_to_frames(isWomen=isWomen, _data=_df_baker, _game_type="Baker", num_baker_games=num_of_baker_games, baker_match_distributions=baker_match_play_distributions)
-    baker_match_data = transform_to_frames(isWomen=isWomen, _data=_df_baker_match, _game_type="Baker Match Play", num_baker_games=num_of_baker_games, baker_match_distributions=baker_match_play_distributions)
+    team_data = transform_to_frames(_data=_df_team, _game_type="Team", num_baker_games=num_of_baker_games, num_of_baker_games_per_block=num_of_baker_games_per_block, baker_match_play_1=baker_match_play_1, baker_match_play_2=baker_match_play_2, baker_match_play_3=baker_match_play_3)
+    baker_data = transform_to_frames(_data=_df_baker, _game_type="Baker", num_baker_games=num_of_baker_games, num_of_baker_games_per_block=num_of_baker_games_per_block, baker_match_play_1=baker_match_play_1, baker_match_play_2=baker_match_play_2, baker_match_play_3=baker_match_play_3)
+    baker_match_data = transform_to_frames(_data=_df_baker_match, _game_type="Baker Match Play", num_baker_games=num_of_baker_games, num_of_baker_games_per_block=num_of_baker_games_per_block, baker_match_play_1=baker_match_play_1, baker_match_play_2=baker_match_play_2, baker_match_play_3=baker_match_play_3)
 
-    (analysized_data, summary_data) = transform_to_table([baker_data, team_data, baker_match_data], 5)
+    (analysized_data, summary_data) = transform_to_table([baker_data, team_data, baker_match_data], num_of_baker_games)
 
     analysized_data = addMetaData(analysized_data, team_name, team_id, event_name, season, event_id, location, start_date, end_date)
     summary_data = addMetaData(summary_data, team_name, team_id, event_name, season, event_id, location, start_date, end_date)

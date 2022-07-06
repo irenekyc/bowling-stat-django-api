@@ -130,8 +130,10 @@ def upload_event_csv(request, **args):
         return JsonResponse({"error": "API route does not exist"}, status=status.HTTP_404_NOT_FOUND)
 
     meta_data = request.data
+
     meta_data["file"] = request.FILES["file"]
     team_name = meta_data["team_name"]
+    print(meta_data)
     (analyized_records, summary_records, team_id, event_id) = analyize_data(**meta_data)
     (summaryUpdateStatus, message) = updateEventSummaryData(data=summary_records, team_id=team_id, event_id=event_id)
     (teamEventDataUpdateStatus, team_event_data) = updateTeamEventData(data=analyized_records, team_id=team_id, event_id=event_id)

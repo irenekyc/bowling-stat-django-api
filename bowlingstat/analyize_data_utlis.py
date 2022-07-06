@@ -226,14 +226,12 @@ def getIsStrike(frame_no, data_row):
 
 
 # Baker game group is different between men and women
-def getGameGroup(isWomen, row_no, game_type, num_baker_games, baker_match_distributions):
+def getGameGroup(num_baker_games_per_block, row_no, game_type, num_baker_games, baker_match_distributions):
     if game_type == "Team":
         return math.floor((row_no + 4) / 5)
     elif game_type == "Baker":
-        if isWomen:
-            return math.floor((row_no + 4) / 5)
-        else:
-            return math.floor((row_no + 3) / 4)
+
+        return math.floor((row_no + num_baker_games_per_block - 1) / 5)
 
     elif game_type == "Baker Match Play":
         match_group = math.nan
