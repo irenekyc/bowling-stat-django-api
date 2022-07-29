@@ -306,7 +306,14 @@ def getFirstBallAttempt(frame_no, data_row):
         # if frame 11 is a strike
         if data_row["Frame10Ball2"] == 10:
             return 1
-        # if frame 10 and frame 11 is finished
+        # if frame 10 is a strike
+        elif data_row["Frame10Ball1"] == 10:
+            # if frame 11 is also finished:
+            if data_row["Frame10Ball2"] == 10:
+                return 1
+            else:
+                return 0
+        # if frame 10 and frame 11 are not stikes but they in combine finished a frame
         elif data_row["Frame10Ball1"] + data_row["Frame10Ball2"] == 10:
             return 1
         else:
