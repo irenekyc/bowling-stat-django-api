@@ -50,7 +50,7 @@ def analysisBowlingDataChampionships(**meta_data):
     # _df_set = pd.concat(_df_set_arr, axis=0, ignore_index=True)
     _df_team = pd.concat(_team_data_arr, axis=0, ignore_index=True)
     _df_baker = pd.concat(_baker_data_arr, axis=0, ignore_index=True)
-    (analysized_data, summary_data) = transform_to_table([_df_baker, _df_team, pd.DataFrame()], 0)
+    (analysized_data, summary_data) = transform_to_table([_df_baker, _df_team], 0)
     event_name = meta_data["event_name"][0]
     season = meta_data["season"][0]
     event_id = event_name.replace(" ", "-").lower() + "--" + season[0].replace(" ", "")
