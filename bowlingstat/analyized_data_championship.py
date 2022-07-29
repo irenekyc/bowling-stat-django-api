@@ -23,6 +23,7 @@ def analysisBowlingDataChampionships(**meta_data):
     _team_data_arr = []
     _baker_data_arr = []
     _baker_mp_data_arr = []
+
     for index in range(int(num_championship_matches)):
         game_no = index + 1
         team_entries = int(meta_data["champ_" + str(game_no) + "_team_games"][0]) * 5
@@ -50,6 +51,7 @@ def analysisBowlingDataChampionships(**meta_data):
 
     _df_team = pd.concat(_team_data_arr, axis=0, ignore_index=True)
     _df_baker = pd.concat(_baker_data_arr, axis=0, ignore_index=True)
+
     (analysized_data, summary_data) = transform_to_table([_df_baker, _df_team], 0)
     event_name = meta_data["event_name"][0]
     season = meta_data["season"][0]

@@ -185,8 +185,8 @@ def transform_to_table(data_sets, num_of_baker_games):
 
     _df_combine = pd.concat([_df_first_ball, _df_frame_average, _df_all], axis=1, join="outer")
     _df_combine = _df_combine.T.drop_duplicates().T
+    _df_combine["fill_ball_non_strikes"] = _df_all["fill_ball_non_strikes"]
 
-    # print(_df_combine)
     # # spares_per_game - baker game only
     # # opens_per_game - baker game only
     # # strikes_per_game - baker game only
