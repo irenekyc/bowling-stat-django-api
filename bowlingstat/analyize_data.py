@@ -52,7 +52,7 @@ def transform_to_frames(_data, _game_type, num_baker_games, num_of_baker_games_p
     return pd.DataFrame(data_entries, columns=["game_type", "game_group", "game_no", "frame_no", "bowler", "first_ball", "second_ball", "pin_leave", "pin_2_leave", "first_ball_attempt", "spare", "strike", "double", "double_attempt", "open", "accumulated_score", "frame_score", "is_fill_ball"])
 
 
-def analyize_data(file, team_name, event_name, location, season, num_of_baker_games, num_of_baker_games_per_block, baker_match_play_1, baker_match_play_2, baker_match_play_3):
+def analyize_data(file, team_name, event_name, location, season, num_of_baker_games, num_of_baker_games_per_block, baker_match_play_1, baker_match_play_2, baker_match_play_3, **args):
     df = pd.read_csv(file[0], index_col=False)
     df = df.drop(columns="Event")
     df = df.drop(columns="EventType")
@@ -87,5 +87,4 @@ def analyize_data(file, team_name, event_name, location, season, num_of_baker_ga
 
     analysized_data = addMetaData(analysized_data, team_name, team_id, event_name, season, event_id, location, start_date, end_date)
     summary_data = addMetaData(summary_data, team_name, team_id, event_name, season, event_id, location, start_date, end_date)
-
     return (analysized_data.to_dict(orient="records"), summary_data.to_dict(orient="records"), team_id, event_id)

@@ -10,6 +10,7 @@ from .utlis import *
 from .names import *
 from .analyize_data import *
 import pandas as pd
+from bowlingstat.analyized_data_championship import analysisBowlingDataChampionships
 
 
 def team_list(self):
@@ -133,19 +134,38 @@ def upload_event_csv(request, **args):
 
     meta_data["file"] = request.FILES["file"]
     team_name = meta_data["team_name"]
-    print(meta_data)
-    (analyized_records, summary_records, team_id, event_id) = analyize_data(**meta_data)
-    (summaryUpdateStatus, message) = updateEventSummaryData(data=summary_records, team_id=team_id, event_id=event_id)
-    (teamEventDataUpdateStatus, team_event_data) = updateTeamEventData(data=analyized_records, team_id=team_id, event_id=event_id)
-    bowlers = []
-    for summary_entry in summary_records:
-        bowlers.append(summary_entry["bowler"])
 
-    bowlersStr = ",".join(bowlers)
-    events = event_id
-    team = {"team_id": team_id, "team_name": team_name, "bowlers": bowlersStr, "events": events}
-    (teamUpdateStatus, team_data) = updateTeamData(data=team)
-    if summaryUpdateStatus == SUCCESS and teamEventDataUpdateStatus == SUCCESS and teamUpdateStatus == SUCCESS:
-        return JsonResponse({"status": "updated", "team_id": team_id, "event_id": event_id})
+    if meta_data["game_pattern"] == "NORMAL_GAME":
+        (analyized_records, summary_records, team_id, event_id) = analyize_data(**meta_data)
+
+        (summaryUpdateStatus, message) = updateEventSummaryData(data=summary_records, team_id=team_id, event_id=event_id)
+        (teamEventDataUpdateStatus, team_event_data) = updateTeamEventData(data=analyized_records, team_id=team_id, event_id=event_id)
+        bowlers = []
+        for summary_entry in summary_records:
+            bowlers.append(summary_entry["bowler"])
+
+        bowlersStr = ",".join(bowlers)
+        events = event_id
+        team = {"team_id": team_id, "team_name": team_name, "bowlers": bowlersStr, "events": events}
+        (teamUpdateStatus, team_data) = updateTeamData(data=team)
+        if summaryUpdateStatus == SUCCESS and teamEventDataUpdateStatus == SUCCESS and teamUpdateStatus == SUCCESS:
+            return JsonResponse({"status": "updated", "team_id": team_id, "event_id": event_id})
+    else:
+        (analyized_records, summary_records, team_id, event_id) = analysisBowlingDataChampionships(**meta_data)
+        (summaryUpdateStatus, message) = updateEventSummaryData(data=summary_records, team_id=team_id, event_id=event_id)
+        (teamEventDataUpdateStatus, team_event_data) = updateTeamEventData(data=analyized_records, team_id=team_id, event_id=event_id)
+        bowlers = []
+        for summary_entry in summary_records:
+            bowlers.append(summary_entry["bowler"])
+
+        bowlersStr = ",".join(bowlers)
+        events = event_id
+        team = {"team_id": team_id, "team_name": team_name, "bowlers": bowlersStr, "events": events}
+
+        (teamUpdateStatus, team_data) = updateTeamData(data=team)
+        if summaryUpdateStatus == SUCCESS and teamEventDataUpdateStatus == SUCCESS and teamUpdateStatus == SUCCESS:
+            return JsonResponse({"status": "updated", "team_id": team_id, "event_id": event_id})
+        else:
+            return JsonResponse({"status": "work in progress"})
 
     return JsonResponse({"error": "something wrong"})

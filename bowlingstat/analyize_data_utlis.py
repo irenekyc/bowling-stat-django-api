@@ -1,7 +1,6 @@
 import math
 import numpy as np
 import pandas as pd
-import pandas as pd
 
 transformed_excel_columns = ["game_type", "game_group", "game_no", "frame_no", "bowler", "first_ball", "second_ball", "pin_leave", "pin_leave_2", "first_ball_attempt", "spares", "strikes", "double", "double_attempt", "opens", "accumulated_score", "frame_score"]
 
