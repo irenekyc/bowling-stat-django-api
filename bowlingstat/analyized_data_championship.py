@@ -53,7 +53,7 @@ def analysisBowlingDataChampionships(**meta_data):
     (analysized_data, summary_data) = transform_to_table([_df_baker, _df_team], 0)
     event_name = meta_data["event_name"][0]
     season = meta_data["season"][0]
-    event_id = event_name.replace(" ", "-").lower() + "--" + season[0].replace(" ", "")
+    event_id = event_name.replace(" ", "-").lower() + "--" + season.replace(" ", "")
     team_name = meta_data["team_name"][0]
     team_id = "-".join(team_name.split(" ")).lower()
     location = meta_data["location"][0]
