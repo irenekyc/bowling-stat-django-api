@@ -506,7 +506,7 @@ def getIsFillBall(frame_no, data_row):
     if frame_no <= 10:
         return 0
     elif frame_no == 11:
-        if frame_10_ball1 + frame_10_ball2 == 10:
+        if frame_10_ball1 < 10 and frame_10_ball1 + frame_10_ball2 == 10:
             return 1
         else:
             return 0
