@@ -27,10 +27,11 @@ def analysisBowlingDataChampionships(**meta_data):
     for index in range(int(num_championship_matches)):
         game_no = index + 1
         team_entries = int(meta_data["champ_" + str(game_no) + "_team_games"][0]) * 5
-        baker_entries = int(meta_data["champ_" + str(game_no) + "_baker_games"][0])
+        baker_entries = int(meta_data["champ_" + str(game_no) + "_baker_games"][0]) * 5
         # baker_mp_entries = int(meta_data["champ_" + str(game_no) + "_baker_mp_games"][0])
         baker_mp_entries = 0
         total_entries = baker_entries + team_entries + baker_mp_entries
+
         _df = df.copy()
         _df = _df.iloc[_game_start_entry : total_entries + _game_start_entry]
         _game_start_entry = _game_start_entry + total_entries
@@ -38,19 +39,20 @@ def analysisBowlingDataChampionships(**meta_data):
         _df["event_type"] = "CHAMPIONSHIP"
         _df_team = _df[_df["GameType"] == "Team"].reset_index()
         _df_baker = _df[_df["GameType"] == "Baker"].reset_index()
-        _df_baker["GameType"] = _df_baker.apply(lambda x: getGameType(x, baker_entries, baker_mp_entries), axis=1)
         _df = pd.concat([_df_team, _df_baker], axis=0)
         # _df_set_arr.append(_df)
 
         # transform to frames
-        team_data = transform_to_frames(_data=_df_team, _game_type="Team", num_baker_games=baker_entries, num_of_baker_games_per_block=5, baker_match_play_1=0, baker_match_play_2=0, baker_match_play_3=0)
+        team_data = transform_to_frames(_data=_df_team, _game_type="Team", num_baker_games=baker_entries, num_of_baker_games_per_block=5, baker_match_play_1=0, baker_match_play_2=0, baker_match_play_3=0, event_type="CHAMPIONSHIP", game_group=game_no)
         _team_data_arr.append(team_data)
-        baker_data = transform_to_frames(_data=_df_baker, _game_type="Baker", num_baker_games=baker_entries, num_of_baker_games_per_block=5, baker_match_play_1=0, baker_match_play_2=0, baker_match_play_3=0)
+        baker_data = transform_to_frames(_data=_df_baker, _game_type="Baker", num_baker_games=baker_entries, num_of_baker_games_per_block=5, baker_match_play_1=0, baker_match_play_2=0, baker_match_play_3=0, event_type="CHAMPIONSHIP", game_group=game_no)
         _baker_data_arr.append(baker_data)
+
         # baker_match_data = transform_to_frames(_data=_df_baker_match, _game_type="Baker Match Play", num_baker_games=num_of_baker_games, num_of_baker_games_per_block=num_of_baker_games_per_block, baker_match_play_1=baker_match_play_1, baker_match_play_2=baker_match_play_2, baker_match_play_3=baker_match_play_3)
 
     _df_team = pd.concat(_team_data_arr, axis=0, ignore_index=True)
     _df_baker = pd.concat(_baker_data_arr, axis=0, ignore_index=True)
+    # print(_df_baker)
 
     (analysized_data, summary_data) = transform_to_table([_df_baker, _df_team], 0)
     event_name = meta_data["event_name"][0]

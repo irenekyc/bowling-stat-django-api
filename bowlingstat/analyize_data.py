@@ -18,19 +18,25 @@ def getEventDate(df):
     return (start_date, end_date)
 
 
-def transform_to_frames(_data, _game_type, num_baker_games, num_of_baker_games_per_block, baker_match_play_1, baker_match_play_2, baker_match_play_3):
+def transform_to_frames(_data, _game_type, num_baker_games, num_of_baker_games_per_block, baker_match_play_1, baker_match_play_2, baker_match_play_3, **args):
     data_entries = []
     _df = _data.copy()
     baker_match_distributions = [baker_match_play_1, baker_match_play_2, baker_match_play_3]
+    event_type = args["event_type"]
+    pass_game_group = args["game_group"]
 
     for row_no in range(len(_df)):
         game_no = row_no + 1
+        game_group = getGameGroup(num_of_baker_games_per_block, game_no, _game_type, num_baker_games, baker_match_distributions)
+        if event_type == "CHAMPIONSHIP":
+            game_group = pass_game_group
+
         current_row_data = _df.iloc[row_no]
         for i in range(12):
             frame_no = i + 1
             data_entry = [
                 _game_type,
-                getGameGroup(num_of_baker_games_per_block, game_no, _game_type, num_baker_games, baker_match_distributions),
+                game_group,
                 game_no,
                 frame_no,
                 getCurrentFrameBowler(frame_no, current_row_data),
@@ -79,9 +85,9 @@ def analyize_data(file, team_name, event_name, location, season, num_of_baker_ga
     _df_baker_match["GameType"] = "Baker Match Play"
 
     # 2. transform to frames
-    team_data = transform_to_frames(_data=_df_team, _game_type="Team", num_baker_games=num_of_baker_games, num_of_baker_games_per_block=num_of_baker_games_per_block, baker_match_play_1=baker_match_play_1, baker_match_play_2=baker_match_play_2, baker_match_play_3=baker_match_play_3)
-    baker_data = transform_to_frames(_data=_df_baker, _game_type="Baker", num_baker_games=num_of_baker_games, num_of_baker_games_per_block=num_of_baker_games_per_block, baker_match_play_1=baker_match_play_1, baker_match_play_2=baker_match_play_2, baker_match_play_3=baker_match_play_3)
-    baker_match_data = transform_to_frames(_data=_df_baker_match, _game_type="Baker Match Play", num_baker_games=num_of_baker_games, num_of_baker_games_per_block=num_of_baker_games_per_block, baker_match_play_1=baker_match_play_1, baker_match_play_2=baker_match_play_2, baker_match_play_3=baker_match_play_3)
+    team_data = transform_to_frames(_data=_df_team, _game_type="Team", num_baker_games=num_of_baker_games, num_of_baker_games_per_block=num_of_baker_games_per_block, baker_match_play_1=baker_match_play_1, baker_match_play_2=baker_match_play_2, baker_match_play_3=baker_match_play_3, event_type="NORMAL_GAME", game_group=None)
+    baker_data = transform_to_frames(_data=_df_baker, _game_type="Baker", num_baker_games=num_of_baker_games, num_of_baker_games_per_block=num_of_baker_games_per_block, baker_match_play_1=baker_match_play_1, baker_match_play_2=baker_match_play_2, baker_match_play_3=baker_match_play_3, event_type="NORMAL_GAME", game_group=None)
+    baker_match_data = transform_to_frames(_data=_df_baker_match, _game_type="Baker Match Play", num_baker_games=num_of_baker_games, num_of_baker_games_per_block=num_of_baker_games_per_block, baker_match_play_1=baker_match_play_1, baker_match_play_2=baker_match_play_2, baker_match_play_3=baker_match_play_3, event_type="NORMAL_GAME", game_group=None)
 
     (analysized_data, summary_data) = transform_to_table([baker_data, team_data, baker_match_data], num_of_baker_games)
 
