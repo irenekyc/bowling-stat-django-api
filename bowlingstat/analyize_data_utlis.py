@@ -133,6 +133,7 @@ def getFillBallStrikePercentage(x):
         return fill_balls_strikes / fill_balls
 
 
+# TODO: Delete it as it is no longer being used
 def isValidFrame(first_ball):
     if math.isnan(first_ball):
         return 0
@@ -224,14 +225,11 @@ def getIsStrike(frame_no, data_row):
         return 0
 
 
-# Baker game group is different between men and women
 def getGameGroup(num_baker_games_per_block, row_no, game_type, num_baker_games, baker_match_distributions):
     if game_type == "Team":
         return math.floor((row_no + 4) / 5)
     elif game_type == "Baker":
-
-        return math.floor((row_no + num_baker_games_per_block - 1) / 5)
-
+        return math.floor((row_no + num_baker_games_per_block - 1) / num_baker_games_per_block)
     elif game_type == "Baker Match Play":
         match_group = math.nan
         if row_no <= baker_match_distributions[0]:
@@ -353,9 +351,10 @@ def getIsOpen(frame_no, data_row):
     second_ball = 0
     if frame_no <= 10:
         first_ball = data_row["Frame" + str(frame_no) + "Ball1"]
-        second_ball = data_row["Frame" + str(frame_no) + "Ball2"]
-        if second_ball is math.isnan:
+        if math.isnan(data_row["Frame" + str(frame_no) + "Ball2"]):
             second_ball = 0
+        else:
+            second_ball = data_row["Frame" + str(frame_no) + "Ball2"]
         if first_ball + second_ball < 10:
             return 1
         else:
@@ -375,6 +374,7 @@ def getIsOpen(frame_no, data_row):
         return 0
 
 
+# TODO: need to write test
 def getCurrentFrameScore(frame_no, data_row):
     current_frame_score = 0
     previous_frame_score = 0
@@ -387,6 +387,7 @@ def getCurrentFrameScore(frame_no, data_row):
         return 0
 
 
+# TODO: need to write test
 def getAccumulatedScore(frame_no, data_row):
     if frame_no <= 10:
         return data_row["Frame" + str(frame_no) + "Score"]
@@ -533,6 +534,7 @@ def addMetaData(df, team_name, team_id, event_name, season, event_id, location, 
     return _df
 
 
+# TODO: should be deleted as it is no longer used
 def getEventLocation(df):
     _df = df.copy()
 
@@ -556,6 +558,7 @@ def getEventDate(df):
     # location = [value for value in location if isinstance(value, str)]
 
 
+# TODO: should be deleted as it is no longer used
 def getAllBowlers(df):
     _df = df.copy()
 

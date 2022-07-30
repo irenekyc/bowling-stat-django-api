@@ -32,8 +32,11 @@ def transform_to_frames(_data, _game_type, num_baker_games, num_of_baker_games_p
             game_group = pass_game_group
 
         current_row_data = _df.iloc[row_no]
+
         for i in range(12):
             frame_no = i + 1
+            if i == 1:
+                print(current_row_data)
             data_entry = [
                 _game_type,
                 game_group,
