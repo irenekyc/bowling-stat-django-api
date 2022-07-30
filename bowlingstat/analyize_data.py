@@ -6,18 +6,6 @@ from .analyize_data_utlis import *
 from .serializers import EventSummaryDataSerializer
 
 
-def getEventDate(df):
-    _df = df.copy()
-    _df["Date - Pandas"] = pd.to_datetime(_df["Date"])
-    _df["Date - Date"] = _df["Date - Pandas"].dt.date
-    date = _df["Date - Date"].dropna().unique()
-
-    start_date = min(date)
-    end_date = max(date)
-
-    return (start_date, end_date)
-
-
 def transform_to_frames(_data, _game_type, num_baker_games, num_of_baker_games_per_block, baker_match_play_1, baker_match_play_2, baker_match_play_3, **args):
     data_entries = []
     _df = _data.copy()

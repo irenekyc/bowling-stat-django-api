@@ -522,3 +522,15 @@ def addMetaData(df, team_name, team_id, event_name, season, event_id, location, 
     new_columns = np.concatenate((["event_id", "team_name", "team_id", "event_name", "event_season", "event_location", "start_date", "end_date"], original_columns), axis=None)
     _df = _df.reindex(columns=new_columns)
     return _df
+
+
+def getEventDate(df):
+    _df = df.copy()
+    _df["Date - Pandas"] = pd.to_datetime(_df["Date"])
+    _df["Date - Date"] = _df["Date - Pandas"].dt.date
+    date = _df["Date - Date"].dropna().unique()
+
+    start_date = min(date)
+    end_date = max(date)
+
+    return (start_date, end_date)
