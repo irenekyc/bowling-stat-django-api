@@ -5,6 +5,7 @@ import numpy as np
 from .analyize_data_utlis import *
 from .transform_to_frames import transform_to_frames
 from .serializers import EventSummaryDataSerializer
+from .transform_to_table import transform_to_table
 
 
 def analyize_data(file, team_name, event_name, location, season, num_of_baker_games, num_of_baker_games_per_block, baker_match_play_1, baker_match_play_2, baker_match_play_3, **args):
@@ -38,7 +39,7 @@ def analyize_data(file, team_name, event_name, location, season, num_of_baker_ga
     baker_data = transform_to_frames(_data=_df_baker, _game_type="Baker", num_baker_games=num_of_baker_games, num_of_baker_games_per_block=num_of_baker_games_per_block, baker_match_play_1=baker_match_play_1, baker_match_play_2=baker_match_play_2, baker_match_play_3=baker_match_play_3, event_type="NORMAL_GAME", game_group=None)
     baker_match_data = transform_to_frames(_data=_df_baker_match, _game_type="Baker Match Play", num_baker_games=num_of_baker_games, num_of_baker_games_per_block=num_of_baker_games_per_block, baker_match_play_1=baker_match_play_1, baker_match_play_2=baker_match_play_2, baker_match_play_3=baker_match_play_3, event_type="NORMAL_GAME", game_group=None)
 
-    (analysized_data, summary_data) = transform_to_table([baker_data, team_data, baker_match_data], num_of_baker_games)
+    (analysized_data, summary_data) = transform_to_table([baker_data, team_data, baker_match_data])
 
     analysized_data = addMetaData(analysized_data, team_name, team_id, event_name, season, event_id, location, start_date, end_date)
     summary_data = addMetaData(summary_data, team_name, team_id, event_name, season, event_id, location, start_date, end_date)

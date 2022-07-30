@@ -179,3 +179,27 @@ bakerMPGameSixIsSpare = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 bakerMPGameSixIsStrike = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 bakerMPGameSixIsOpen = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0]
 bakerMPGameSixIsFill = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+
+## TEST CASE for 12 frames data ##
+df_baker_12_frames = pd.read_csv("bowlingstat/test_baker.csv")
+df_team_12_frames = pd.read_csv("bowlingstat/test_team.csv")
+df_baker_mp_12_frames = pd.read_csv("bowlingstat/test_bakerMP.csv")
+
+## BAKER BOWLERS DATA ##
+bakerBowlerA = df_baker_12_frames[df_baker_12_frames["bowler"] == "Test BowlerA"]
+bakerBowlerB = df_baker_12_frames[df_baker_12_frames["bowler"] == "Test BowlerB"]
+bakerBowlerC = df_baker_12_frames[df_baker_12_frames["bowler"] == "Test BowlerC"]
+bakerBowlerD = df_baker_12_frames[df_baker_12_frames["bowler"] == "Test BowlerD"]
+bakerBowlerE = df_baker_12_frames[df_baker_12_frames["bowler"] == "Test BowlerE"]
+
+## Team BOWLERS DATA ##
+teamBowlerD = df_team_12_frames[df_team_12_frames["bowler"] == "Test BowlerD"]
+teamBowlerE = df_team_12_frames[df_team_12_frames["bowler"] == "Test BowlerE"]
+
+## BAKER MP BOWLERS DATA ##
+bakerMPBowlerA = df_baker_mp_12_frames[df_baker_mp_12_frames["bowler"] == "Test BowlerA"]
+bakerMPBowlerB = df_baker_mp_12_frames[df_baker_mp_12_frames["bowler"] == "Test BowlerB"]
+bakerMPBowlerC = df_baker_mp_12_frames[df_baker_mp_12_frames["bowler"] == "Test BowlerC"]
+bakerMPBowlerD = df_baker_mp_12_frames[df_baker_mp_12_frames["bowler"] == "Test BowlerD"]
+bakerMPBowlerE = df_baker_mp_12_frames[df_baker_mp_12_frames["bowler"] == "Test BowlerE"]
