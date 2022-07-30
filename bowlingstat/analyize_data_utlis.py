@@ -133,16 +133,6 @@ def getFillBallStrikePercentage(x):
         return fill_balls_strikes / fill_balls
 
 
-# TODO: Delete it as it is no longer being used
-def isValidFrame(first_ball):
-    if math.isnan(first_ball):
-        return 0
-    elif first_ball == 0:
-        return 0
-    else:
-        return 1
-
-
 def transform_to_table(data_sets, num_of_baker_games):
     _data_sets_arr = []
     for data_set in data_sets:
@@ -534,16 +524,6 @@ def addMetaData(df, team_name, team_id, event_name, season, event_id, location, 
     return _df
 
 
-# TODO: should be deleted as it is no longer used
-def getEventLocation(df):
-    _df = df.copy()
-
-    location = _df["Location"].unique()
-    location = [value for value in location if isinstance(value, str)]
-
-    return " , ".join(location)
-
-
 def getEventDate(df):
     _df = df.copy()
     _df["Date - Pandas"] = pd.to_datetime(_df["Date"])
@@ -556,12 +536,3 @@ def getEventDate(df):
     return (start_date, end_date)
     # start_date = _df['Location'].unique()
     # location = [value for value in location if isinstance(value, str)]
-
-
-# TODO: should be deleted as it is no longer used
-def getAllBowlers(df):
-    _df = df.copy()
-
-    bowlers = _df["bowler"].dropna().unique()
-
-    return list(bowlers)
