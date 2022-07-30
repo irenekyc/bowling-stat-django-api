@@ -111,3 +111,25 @@ frame_bowler_row = pd.DataFrame(
         "Frame10Ball3Bowler",
     ],
 ).iloc[0]
+
+test_data = pd.read_csv("bowlingstat/Test Data.csv")
+test_data_baker = test_data[test_data["GameType"] == "Baker"].iloc[0:5]
+
+## TEST CASE Baker One ##
+bakerGameOneBowler = ["Test BowlerA", "Test BowlerB", "Test BowlerC", "Test BowlerD", "Test BowlerE", "Test BowlerA", "Test BowlerB", "Test BowlerC", "Test BowlerD", "Test BowlerE", "Test BowlerE", "Test BowlerE"]
+bakerGameOneFirstBall = [9, 10, 9, 10, 9, 10, 9, 10, 0, 10, 10, 10]
+bakerGameOneSecondBall = [1, 0, 1, 0, 1, 0, 1, 0, 10, 0, 0, 0]
+bakerGameOneFirstBallAttempt = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+bakerGameOneIsSpare = [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0]
+bakerGameOneIsStrike = [0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1]
+bakerGameOneIsOpen = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+bakerGameOneIsFill = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
+## TEST CASE Baker Five ##
+bakerGameFiveBowler = ["Test BowlerA", "Test BowlerB", "Test BowlerC", "Test BowlerD", "Test BowlerE", "Test BowlerA", "Test BowlerB", "Test BowlerC", "Test BowlerD", "Test BowlerE", "Test BowlerE", "Test BowlerE"]
+bakerGameFiveFirstBall = [10, 10, 10, 10, 10, 10, 10, 10, 10, 9, 10, 0]
+bakerGameFiveSecondBall = [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0]
+bakerGameFiveFirstBallAttempt = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0]
+bakerGameFiveIsSpare = [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0]
+bakerGameFiveIsStrike = [1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0]
+bakerGameFiveIsOpen = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+bakerGameFiveIsFill = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0]

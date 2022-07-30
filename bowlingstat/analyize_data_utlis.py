@@ -106,6 +106,7 @@ def calculatesummarydata(df):
     return _df_combine
 
 
+# TODO: need to write test
 def getIsFillBallkStrike(x):
     if x["is_fill_ball"] == 0:
         return 0
@@ -115,6 +116,7 @@ def getIsFillBallkStrike(x):
         return 0
 
 
+# TODO: need to write test
 def getIsFillBallNotStrike(x):
     if x["is_fill_ball"] == 0:
         return 0
@@ -124,6 +126,7 @@ def getIsFillBallNotStrike(x):
         return 0
 
 
+# TODO: need to write test
 def getFillBallStrikePercentage(x):
     fill_balls = x["fill_balls"]
     fill_balls_strikes = x["fill_ball_strikes"]
@@ -133,6 +136,7 @@ def getFillBallStrikePercentage(x):
         return fill_balls_strikes / fill_balls
 
 
+# TODO: need to write test
 def transform_to_table(data_sets, num_of_baker_games):
     _data_sets_arr = []
     for data_set in data_sets:
@@ -288,6 +292,8 @@ def getFirstBallAttempt(frame_no, data_row):
     elif frame_no == 11:
         if data_row["Frame10Ball1"] == 10:
             return 1
+        elif data_row["Frame10Ball1"] < 10 and data_row["Frame10Ball1"] + data_row["Frame10Ball2"] == 10:
+            return 1
         else:
             return 0
     elif frame_no == 12:
@@ -301,9 +307,6 @@ def getFirstBallAttempt(frame_no, data_row):
                 return 1
             else:
                 return 0
-        # if frame 10 and frame 11 are not stikes but they in combine finished a frame
-        elif data_row["Frame10Ball1"] + data_row["Frame10Ball2"] == 10:
-            return 1
         else:
             return 0
 

@@ -1,6 +1,7 @@
 from django.test import TestCase
 from .analyize_data_utlis import *
 from .testcase import *
+import datetime
 
 
 class TestAnalyizeDataUtlis(TestCase):
@@ -168,8 +169,8 @@ class TestAnalyizeDataUtlis(TestCase):
 
         # # ### TEST CASE Two ###
         self.assertEqual(getFirstBallAttempt(10, frame_data_row_case_2), 1)
-        self.assertEqual(getFirstBallAttempt(11, frame_data_row_case_2), 0)
-        self.assertEqual(getFirstBallAttempt(12, frame_data_row_case_2), 1)
+        self.assertEqual(getFirstBallAttempt(11, frame_data_row_case_2), 1)
+        self.assertEqual(getFirstBallAttempt(12, frame_data_row_case_2), 0)
 
         # # ### TEST CASE Three ###
         self.assertEqual(getFirstBallAttempt(10, frame_data_row_case_3), 1)
@@ -264,3 +265,8 @@ class TestAnalyizeDataUtlis(TestCase):
         ## Baker or Baker Match Play always return "-" ###
         self.assertEqual(getIsDoubleAttempt("Baker", 1, frame_data_row_case_2), "-")
         self.assertEqual(getIsDoubleAttempt("Baker Match Play", 2, frame_data_row_case_2), "-")
+
+    def test_get_correct_event_date(self):
+        """Event Start Date and End Date should be correctly identified"""
+        df = pd.DataFrame(["2020-1-1", "2020-1-1", "2020-1-1", "2020-1-2"], columns=["Date"])
+        self.assertEqual(getEventDate(df), (datetime.date(2020, 1, 1), datetime.date(2020, 1, 2)))
